@@ -5,15 +5,20 @@
 
 int main(int argc, char *argv[])
 {
-    // The first command line argument is the option (either "0" encrypt or "1" decrypt)
-    int option = atoi(argv[1]);
-    // The second command line argument is the key index (1-16)
-    int keyIndex = atoi(argv[2]);
-    
-    if (keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])) return -1;
+    // The first command line argument is the user
+    const char* user = argv[1];
 
-    const char* key = keys[keyIndex - 1];
+    // The second command line argument is the option (either "0" encrypt or "1" decrypt)
+    int option = atoi(argv[2]);
+    // The third command line argument is the key index (1-16)
+    int keyIndex = atoi(argv[3]);
     
+    if (!isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])){
+        printf("your character does not know that language.\n");
+        return -1;
+    }
+    const char* key = keys[keyIndex - 1];
+
     // Determine the size of the alphabet
     int alphabetSize = sizeof(alphabet) / sizeof(alphabet[0]);
 
@@ -43,6 +48,22 @@ int main(int argc, char *argv[])
     
     printf("translated message: %s\n", message);
 
+    return 0;
+}
+
+int isKeyAvailableForUser(const char *username, int keyIndex) {
+    // Look for the user in the users array
+    for (int i = 0; i < sizeof(users)/sizeof(users[0]); i++) {
+        if (strcmp(users[i].username, username) == 0) {
+            // Found the user, check if the key is available
+            for (int j = 0; j < sizeof(users[i].availableKeys)/sizeof(users[i].availableKeys[0]); j++) {
+                if (users[i].availableKeys[j] == 0) break;  // End of list
+                if (users[i].availableKeys[j] == keyIndex) return 1;  // Key is available
+            }
+        }
+    }
+    
+    // User not found or key not available
     return 0;
 }
 
