@@ -1,5 +1,13 @@
 # Encrypt/Decrypt Program
 
+## Table Of Content
+1. [Overview](#overview)
+2. [Usage](#usage)
+3. [Example](#example)
+4. [Important Notes](#important-notes)
+5. [Build](#build)
+6. [Limitations](#limitations)
+
 ## Overview
 This program provides a simple encryption and decryption service based on the concept of Vigenère cipher but with added complexity. You can select different encryption/decryption keys, each corresponding to a certain language from the Dungeons & Dragons universe.
 
