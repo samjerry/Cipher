@@ -3,49 +3,50 @@
 #include <string.h>
 #include "cipher.h"
 
-int main(int argc, char *argv[])
+int main()
 {
-    // The first command line argument is the user
-    const char* user = argv[1];
-    // The second command line argument is the option (either "0" encrypt or "1" decrypt)
-    int option = atoi(argv[2]);
-    // The third command line argument is the key index (1-16)
-    int keyIndex = atoi(argv[3]);
-    
-    if (!isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])){
-        printf("your character does not know that language.\n");
+    char user[50];
+    int option;
+    int keyIndex;
+
+    // Prompt the user for their userID, option, and key index
+    printf("Enter User ID: ");
+    fgets(user, sizeof(user), stdin);
+    user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
+
+    printf("Enter option (0 to Write, 1 to Read): ");
+    scanf("%d", &option);
+
+    printf("Available languages are:\n");
+    for (int i = 0; i < sizeof(keys)/sizeof(keys[0]); i++) {
+        if (isKeyAvailableForUser(user, i + 1)) {
+            printf("%d (%s)\n", i + 1, keys[i]);
+        }
+    }
+    printf("Enter language number: ");
+    scanf("%d", &keyIndex);
+
+    if (!isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])) {
+        printf("Invalid input!\n");
         return -1;
     }
-    const char* key = keys[keyIndex - 1];
 
+    const char* key = keys[keyIndex - 1];
+    
     // Determine the size of the alphabet
     int alphabetSize = sizeof(alphabet) / sizeof(alphabet[0]);
 
-
-    // Combine all remaining command line arguments into a single string message
-    int totalLength = 0;
-    for (int i = 3; i < argc; i++) {
-        totalLength += strlen(argv[i]) + (i < argc - 1);  // Add space for all but last word
-    }
-
-    // Create a Variable Length Array (VLA) for the message
-    char message[totalLength + 1];  // +1 for the null terminator
-    message[0] = '\0';  // Initialize the string
-
-
-    // Concatenate arguments into message
-    for (int i = 3; i < argc; i++) {
-        strcat(message, argv[i]);
-    
-        if (i < argc - 1)  strcat(message, " ");  // Add space between words
-    }
-
-    //printf("option: %i\nkey: %s\nmessage: %s\n", option, key, message);
+    // Prompt the user for the message to encrypt/decrypt
+    printf("Enter your message: ");
+    getchar();  // Consume the '\n' from the previous input
+    char message[1000];  // Choose an appropriate size for your use case
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = '\0';  // Remove trailing newline
 
     int msgsize = strlen(message);
-    TranslateMessage(message, totalLength, option, key);
+    TranslateMessage(message, msgsize, option, key);
     
-    printf("translated message: %s\n", message);
+    printf("Translated message: %s\n", message);
 
     return 0;
 }
