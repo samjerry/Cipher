@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "cipher.h"
 
 int main()
@@ -13,6 +14,13 @@ int main()
     printf("Enter User ID: ");
     fgets(user, sizeof(user), stdin);
     user[strcspn(user, "\n")] = '\0'; // Remove trailing newline
+
+    // Immediately check if the user exists
+    if (!authenticateUser(user)) 
+    {
+        printf("Invalid User ID. Exiting.");
+        return -1;
+    }
 
     printf("Enter option (0 to Write, 1 to Read): ");
     scanf("%d", &option);
@@ -52,6 +60,21 @@ int main()
     printf("Translated message: %s\n", message);
 
     return 0;
+}
+
+bool authenticateUser(const char *username)
+{
+    // Look for the user in the users array
+    for (int i = 0; i < sizeof(users) / sizeof(users[0]); i++)
+    {
+        if (strcmp(users[i].username, username) == 0)
+        {
+            // Found the user, check if the key is available
+            return true;
+        }
+    }
+
+    return false;
 }
 
 int isKeyAvailableForUser(const char *username, int keyIndex)
