@@ -14,6 +14,13 @@ int main()
     fgets(user, sizeof(user), stdin);
     user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
 
+    // Immediately check if the user exists
+    if (!authenticateUser(user)) 
+    {
+        printf("Invalid User ID. Exiting.");
+        return -1;
+    }
+    
     printf("Enter option (0 to Write, 1 to Read): ");
     scanf("%d", &option);
 
