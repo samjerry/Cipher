@@ -11,7 +11,10 @@ int main()
 
     // Prompt the user for their userID, option, and key index
     printf("Enter User ID: ");
-    fgets(user, sizeof(user), stdin);
+    if(fgets(user, sizeof(user), stdin) == NULL) {
+        printf("Error reading User ID. Exiting.");
+        return -1;
+    }
     user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
 
     // Immediately check if the user exists
@@ -20,9 +23,14 @@ int main()
         printf("Invalid User ID. Exiting.");
         return -1;
     }
-    
+
+    // Get option from user and validate
+    char option_str[3];
     printf("Enter option (0 to Write, 1 to Read): ");
-    scanf("%d", &option);
+    if(fgets(option_str, sizeof(option_str), stdin) == NULL || sscanf(option_str, "%d", &option) != 1 || (option != 0 && option != 1)) {
+        printf("Invalid option. Exiting.\n");
+        return -1;
+    }
 
     printf("Available languages are:\n");
     for (int i = 0; i < sizeof(keys)/sizeof(keys[0]); i++) {
@@ -30,8 +38,14 @@ int main()
             printf("%d (%s)\n", i + 1, keys[i]);
         }
     }
+
+    // Get language number from user and validate
+    char keyIndex_str[3];
     printf("Enter language number: ");
-    scanf("%d", &keyIndex);
+    if(fgets(keyIndex_str, sizeof(keyIndex_str), stdin) == NULL || sscanf(keyIndex_str, "%d", &keyIndex) != 1 || !isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])) {
+        printf("Invalid input!\n");
+        return -1;
+    }
 
     if (!isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])) {
         printf("Invalid input!\n");
