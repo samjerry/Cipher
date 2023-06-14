@@ -7,7 +7,6 @@ int main(int argc, char *argv[])
 {
     // The first command line argument is the user
     const char* user = argv[1];
-
     // The second command line argument is the option (either "0" encrypt or "1" decrypt)
     int option = atoi(argv[2]);
     // The third command line argument is the key index (1-16)
