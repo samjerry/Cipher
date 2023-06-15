@@ -103,6 +103,26 @@ int main()
     return 0;
 }
 
+int isNumeric(const char* str) {
+    while (*str) {
+        if (!isdigit(*str)) {
+            return 0;
+        }
+        str++;
+    }
+    return 1;
+}
+
+int authenticateUser(const char* username) {
+    // Look for the user in the users array
+    for (int i = 0; i < sizeof(users)/sizeof(users[0]); i++) {
+        if (strcmp(users[i].username, username) == 0) {
+            return 1; // User found
+        }
+    }
+    return 0; // User not found
+}
+
 int isKeyAvailableForUser(const char *username, int keyIndex) {
     // Look for the user in the users array
     for (int i = 0; i < sizeof(users)/sizeof(users[0]); i++) {

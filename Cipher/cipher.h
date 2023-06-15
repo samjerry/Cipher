@@ -37,10 +37,12 @@ User users[] = {
     { "Rjtxoy", {4, 11, 15, 0} },   // User 3
     { "Iwnb", {1, 4, 5, 6, 0} },    // User 4
     { "Nrpap", {1, 4, 5, 6, 0} },   // User 5
+    { "Pim", {1,4,5,7,8,12,14,16,00}}  // test
 }; 
 
 // Function prototypes
 int isNumeric(const char* str);
+int authenticateUser(const char* username);
 char * TranslateMessage(char* msg, int length, int option, const char* key);
 char ShiftChar(char c, int amount, char dir, const char* currentAlphabet);
 int isKeyAvailableForUser(const char *username, int keyIndex);
