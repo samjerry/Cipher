@@ -40,6 +40,7 @@ User users[] = {
 }; 
 
 // Function prototypes
+int isNumeric(const char* str);
 char * TranslateMessage(char* msg, int length, int option, const char* key);
 char ShiftChar(char c, int amount, char dir, const char* currentAlphabet);
 int isKeyAvailableForUser(const char *username, int keyIndex);

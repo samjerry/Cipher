@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "cipher.h"
 
 int main()
 {
     char user[50];
+    char optionStr[3];
     int option;
+    char keyIndexStr[3];
     int keyIndex;
 
     // Prompt the user for their userID, option, and key index
@@ -15,7 +18,14 @@ int main()
     user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
 
     printf("Enter option (0 to Write, 1 to Read): ");
-    scanf("%d", &option);
+    fgets(optionStr, sizeof(optionStr), stdin);
+    optionStr[strcspn(optionStr, "\n")] = '\0';  // Remove trailing newline
+
+    if (!isNumeric(optionStr)) {
+        printf("Invalid input! Option must be a number.\n");
+        return -1;
+    }
+    option = atoi(optionStr);
 
     printf("Available languages are:\n");
     for (int i = 0; i < sizeof(keys)/sizeof(keys[0]); i++) {
@@ -24,7 +34,14 @@ int main()
         }
     }
     printf("Enter language number: ");
-    scanf("%d", &keyIndex);
+    fgets(keyIndexStr, sizeof(keyIndexStr), stdin);
+    keyIndexStr[strcspn(keyIndexStr, "\n")] = '\0';  // Remove trailing newline
+
+    if (!isNumeric(keyIndexStr)) {
+        printf("Invalid input! Language number must be a number.\n");
+        return -1;
+    }
+    keyIndex = atoi(keyIndexStr);
 
     if (!isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])) {
         printf("Invalid input!\n");
@@ -32,7 +49,7 @@ int main()
     }
 
     const char* key = keys[keyIndex - 1];
-    
+
     // Determine the size of the alphabet
     int alphabetSize = sizeof(alphabet) / sizeof(alphabet[0]);
 
@@ -45,7 +62,7 @@ int main()
 
     int msgsize = strlen(message);
     TranslateMessage(message, msgsize, option, key);
-    
+
     printf("Translated message: %s\n", message);
 
     return 0;
