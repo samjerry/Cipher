@@ -3,6 +3,25 @@
 #include <string.h>
 #include "cipher.h"
 
+// A new function to handle user input
+int getInput(char *prompt, char *buffer, size_t size) {
+    printf("%s", prompt);
+    if (!fgets(buffer, size, stdin)) {
+        return 0;
+    }
+
+    // Check if the input string length exceeds the buffer size
+    if (!strchr(buffer, '\n')) {
+        // Clear the input buffer
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+    } else {
+        buffer[strcspn(buffer, "\n")] = '\0';  // Remove trailing newline
+    }
+
+    return 1;
+}
+
 int main()
 {
     char user[50];
@@ -10,12 +29,10 @@ int main()
     int keyIndex;
 
     // Prompt the user for their userID, option, and key index
-    printf("Enter User ID: ");
-    if(fgets(user, sizeof(user), stdin) == NULL) {
+    if (!getInput("Enter User ID: ", user, sizeof(user))) {
         printf("Error reading User ID. Exiting.");
         return -1;
     }
-    user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
 
     // Immediately check if the user exists
     if (!authenticateUser(user)) 
@@ -26,8 +43,9 @@ int main()
 
     // Get option from user and validate
     char option_str[3];
-    printf("Enter option (0 to Write, 1 to Read): ");
-    if(fgets(option_str, sizeof(option_str), stdin) == NULL || sscanf(option_str, "%d", &option) != 1 || (option != 0 && option != 1)) {
+    if(!getInput("Enter option (0 to Write, 1 to Read): ", option_str, sizeof(option_str)) || 
+                                                           sscanf(option_str, "%d", &option) != 1 || 
+                                                           (option != 0 && option != 1)) {
         printf("Invalid option. Exiting.\n");
         return -1;
     }
@@ -41,32 +59,30 @@ int main()
 
     // Get language number from user and validate
     char keyIndex_str[3];
-    printf("Enter language number: ");
-    if(fgets(keyIndex_str, sizeof(keyIndex_str), stdin) == NULL || sscanf(keyIndex_str, "%d", &keyIndex) != 1 || !isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])) {
-        printf("Invalid input!\n");
-        return -1;
-    }
-
-    if (!isKeyAvailableForUser(user, keyIndex) || keyIndex < 1 || keyIndex > sizeof(keys)/sizeof(keys[0])) {
+    if(!getInput("Enter language number: ", keyIndex_str, sizeof(keyIndex_str)) || 
+                                            sscanf(keyIndex_str, "%d", &keyIndex) != 1 || 
+                                            !isKeyAvailableForUser(user, keyIndex) || 
+                                            keyIndex < 1 || 
+                                            keyIndex > sizeof(keys)/sizeof(keys[0])) {
         printf("Invalid input!\n");
         return -1;
     }
 
     const char* key = keys[keyIndex - 1];
-    
+
     // Determine the size of the alphabet
     int alphabetSize = sizeof(alphabet) / sizeof(alphabet[0]);
 
     // Prompt the user for the message to encrypt/decrypt
-    printf("Enter your message: ");
-    getchar();  // Consume the '\n' from the previous input
     char message[1000];  // Choose an appropriate size for your use case
-    fgets(message, sizeof(message), stdin);
-    message[strcspn(message, "\n")] = '\0';  // Remove trailing newline
+    if (!getInput("Enter your message: ", message, sizeof(message))) {
+        printf("Error reading message. Exiting.");
+        return -1;
+    }
 
     int msgsize = strlen(message);
     TranslateMessage(message, msgsize, option, key);
-    
+
     printf("Translated message: %s\n", message);
 
     return 0;
