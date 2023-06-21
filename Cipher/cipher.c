@@ -29,17 +29,26 @@ int main()
     int option;
     int keyIndex;
     char message[1000];
+int continueProgram = 1;
 
-    while(1) // Main program loop
+    while (continueProgram)
     {
-        printf("Enter User ID: ");
+        // Prompt the user for their userID, option, and key index
+        printf("Enter User ID (or 'quit' to exit): ");
         fgets(user, sizeof(user), stdin);
         user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
 
+        // If the user inputs 'quit', terminate the program
+        if (strcmp(user, "quit") == 0)
+        {
+            printf("Exiting program.\n");
+            return 0; // Exit with success
+        }
+
         if (!authenticateUser(user)) 
         {
-            printf("Invalid User ID. Exiting.\n");
-            return -1;
+            printf("Invalid User ID. Try again.\n");
+            continue;
         }
 
         while(1) // Option selection loop
