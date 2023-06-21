@@ -29,7 +29,7 @@ static const char *keys[] = {"Dwarvish",
 
 typedef struct {
     const char *username;
-    int availableKeys[16];
+    int availableKeys[17];  // Increased array size to 17 to accommodate the sentinel value
 } User;
 
 User users[] = {
