@@ -45,11 +45,11 @@ typedef struct {
 
 User users[] = {
     { "428", "Admin", {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0} },
-    { "Uhbk", "User 1", {14, 0} },
-    { "Bndc", "User 2", {1, 2, 4, 6, 7, 0} },
-    { "Rjtxoy", "User 3", {4, 11, 15, 0} },
-    { "Iwnb", "User 4", {1, 4, 5, 6, 0} },
-    { "Nrpap", "User 5", {1, 4, 5, 6, 0} },
+    { "Lqmvlxe", "Sparkle", {14, 0} },
+    { "Ikalm", "Alora", {1, 2, 4, 6, 7, 0} },
+    { "Eyjvyxs", "Adelynn", {4, 11, 15, 0} },
+    { "Azdt", "Krug", {7, 13, 0} },
+    { "Pyhcayud", "Informus", {2, 5, 0} },
     { "Pim", "Test User", {1, 4, 5, 7, 8, 12, 14, 16, 0}}
 };
 

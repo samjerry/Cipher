@@ -139,7 +139,6 @@ char user[50];
     return 0;
 }
 
-
 int isNumeric(const char* str) {
     while (*str) {
         if (!isdigit(*str)) {
