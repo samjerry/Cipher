@@ -106,7 +106,9 @@ Here's a quick breakdown of what the command does:
 
 Run the Program: If the code compiled successfully, you can now run your program with the following command:
 
-`./cipher`
+```bash
+./cipher
+```
 
 If you run into any issues during compilation, make sure to check the error message in the terminal. It will often give you a clue as to what went wrong.
 
