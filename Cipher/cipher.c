@@ -23,21 +23,29 @@ int getInput(char *prompt, char *buffer, size_t size) {
     return 1;
 }
 
+void clearConsole() {
+    if (CLEAR_COMMAND != "")
+        system(CLEAR_COMMAND);
+    else
+        printf("\n"); // Fallback if the clear command is not defined
+}
+
 int main()
 {
-    char user[50];
+char user[50];
     int option;
+    const User* authenticatedUser;
     int keyIndex;
     char message[1000];
-int continueProgram = 1;
+    int continueProgram = 1;
 
     while (continueProgram)
     {
+        clearConsole();
         // Prompt the user for their userID, option, and key index
         printf("Enter User ID (or 'quit' to exit): ");
         fgets(user, sizeof(user), stdin);
         user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
-
         // If the user inputs 'quit', terminate the program
         if (strcmp(user, "quit") == 0)
         {
@@ -45,15 +53,20 @@ int continueProgram = 1;
             return 0; // Exit with success
         }
 
-        if (!authenticateUser(user)) 
+        authenticatedUser = authenticateUser(user);
+        if (authenticatedUser == NULL) 
         {
             printf("Invalid User ID. Try again.\n");
             continue;
         }
+                printf("Welcome, %s!\n", authenticatedUser->username);
+
 
         while(1) // Option selection loop
         {
-            printf("Enter option (0 to Write, 1 to Read, 2 to Logout): ");
+            clearConsole();
+
+            printf("Welcome, %s! enter option (0 to Write, 1 to Read, 2 to Logout): ", authenticatedUser->username);
             if (getNumericInput(&option) != 0 || (option != 0 && option != 1 && option != 2))
             {
                 printf("Invalid input! Please enter 0 to Write, 1 to Read or 2 to Logout.\n");
@@ -67,17 +80,17 @@ int continueProgram = 1;
 
             while(1) // Language selection loop
             {
+                clearConsole();
+
                 printf("Available languages are:\n");
                 for (int i = 0; i < NUMBER_OF_KEYS; i++) 
                 {
-                    if (isKeyAvailableForUser(user, i + 1)) 
-                    {
+                    if (isKeyAvailableForUser(authenticatedUser, i + 1)) 
                         printf("%d (%s)\n", i + 1, keys[i]);
-                    }
                 }
                 printf("Enter language number or -1 to go back: ");
                 
-                if (getNumericInput(&keyIndex) != 0 || (!isKeyAvailableForUser(user, keyIndex) && keyIndex != -1) || keyIndex < -1 || keyIndex > NUMBER_OF_KEYS)
+                if (getNumericInput(&keyIndex) != 0 || (!isKeyAvailableForUser(authenticatedUser, keyIndex) && keyIndex != -1) || keyIndex < -1 || keyIndex > NUMBER_OF_KEYS)
                 {
                     printf("Invalid input! Please enter a valid language number or -1 to go back.\n");
                     continue;
@@ -90,6 +103,8 @@ int continueProgram = 1;
 
                 while(1) // Message input and translation loop
                 {
+                    clearConsole();
+
                     const char* key = keys[keyIndex - 1];
 
                     printf("Enter your message or type 'BACK' to go back: ");
@@ -160,29 +175,25 @@ int getNumericInput(int *num)
     }
 }
 
-int authenticateUser(const char* username) {
-    // Look for the user in the users array
-    for (int i = 0; i < sizeof(users)/sizeof(users[0]); i++) {
-        if (strcmp(users[i].username, username) == 0) {
-            return 1; // User found
-        }
+const User* authenticateUser(const char* userID)
+{
+    for (int i = 0; i < sizeof(users) / sizeof(User); i++)
+    {
+        if (strcmp(userID, users[i].userID) == 0)
+            return &users[i];  // return a pointer to the matched user
     }
-    return 0; // User not found
+    return NULL;  // return NULL if no match found
 }
 
-int isKeyAvailableForUser(const char *username, int keyIndex) {
-    // Look for the user in the users array
-    for (int i = 0; i < sizeof(users)/sizeof(users[0]); i++) {
-        if (strcmp(users[i].username, username) == 0) {
-            // Found the user, check if the key is available
-            for (int j = 0; j < sizeof(users[i].availableKeys)/sizeof(users[i].availableKeys[0]); j++) {
-                if (users[i].availableKeys[j] == 0) break;  // End of list
-                if (users[i].availableKeys[j] == keyIndex) return 1;  // Key is available
-            }
+int isKeyAvailableForUser(const User *user, int keyIndex) 
+{
+    for (int i = 0; i < NUMBER_OF_KEYS; i++) 
+    {
+        if (user->availableKeys[i] == keyIndex) 
+        {
+            return 1;
         }
     }
-    
-    // User not found or key not available
     return 0;
 }
 
