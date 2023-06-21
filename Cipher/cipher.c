@@ -50,6 +50,8 @@ char user[50];
         if (strcmp(user, "quit") == 0)
         {
             printf("Exiting program.\n");
+                                clearConsole();
+
             return 0; // Exit with success
         }
 
