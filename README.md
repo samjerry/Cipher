@@ -24,39 +24,38 @@ The keys available are:
 | 8   |   Abyssal   |  | 16  |   Druidic   |
 
 ## Usage
-The program is a command-line tool and should be used as follows:
-```bash
-$ ./cipher <option> <key> <message>
-```
-where:
+The script prompts the user for the following inputs:
 
-`<option>` is 0 for encryption and 1 for decryption.
+1. User ID
 
-`<key>` is an integer from 1 to 16, each number corresponds to the keys listed above.
+2. An option (0 to Write/Encode, 1 to Read/Decode)
 
-`<message>` is the string to be encrypted or decrypted. If the message contains spaces, it should be enclosed in quotes.
+3. Language number
+
+After collecting these details, it checks whether the chosen language is available for the provided user. If the language is not available or if an invalid option is entered, the program terminates with an error message.
+In the case of successful validation, the program then asks for a message from the user to encode or decode, based on the chosen option.
 
 ## Example
-To encrypt the phrase "hello world" using the "Elvish" key, you would run:
-```bash
-$ ./cipher 0 2 "hello world"
-```
-This would return the message: "hshch eodpm"
+Here's an example of the program execution:
 
-To decrypt the message using the same key, you would run:
-```bash
-$ ./cipher 1 2 "hshch eodpm"
+```javascript
+Enter User ID: Uhbk
+Enter option (0 to Write, 1 to Read): 0
+Available languages are:
+14 (Sylvan)
+Enter language number: 14
+Enter your message: Hello World!
+Translated message: Bktlo Dmfie!
 ```
-This would then once again be translated to "hello world"
 
 ## Important Notes
-The program is case-sensitive, meaning it treats uppercase and lowercase letters separately.
+The User ID, option, and language number are expected to be entered by the user manually when prompted.
 
-The program ignores spaces and special characters while encrypting or decrypting, only alphabetic characters are processed.
+The available languages for each user are predefined and cannot be changed during program execution.
 
-When using decryption, make sure to use the same key (i.e., the same language) that was used to encrypt the message.
+The "option" should be either 0 (for Write/Encode) or 1 (for Read/Decode).
 
-The translation method alternates shifting right and left across the alphabet for each character.
+The message input by the user should not exceed 1000 characters.
 
 ## Build
 The program is written in C and can be compiled using any standard C compiler. For example, to compile the program with gcc, use the following command:
@@ -65,8 +64,8 @@ $ gcc -o cipher cipher.c
 ```
 
 ## Limitations
-The program does not currently support error handling for situations where the user inputs invalid arguments.
+The program only works with predefined users and their available languages. To modify this, you will need to manually change the code.
 
-The program uses simple ASCII arithmetic for character manipulation. Non-ASCII or special characters may not be processed correctly.
+It only encodes and decodes alphabetic characters; numbers and special characters are not handled.
 
-
+This program does not have error handling for non-numeric input for the option or language number.
