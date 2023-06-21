@@ -2,6 +2,8 @@
 #define MIN_LOWER_CIPHER_DECIMAL 97
 #define MIN_UPPER_CIPHER_DECIMAL 65
 #define ALPHABET_RANGE 26
+#define NUMBER_OF_KEYS 16
+
 
 // Define the alphabet and the keys for the cipher
 static const char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
@@ -37,11 +39,12 @@ User users[] = {
     { "Rjtxoy", {4, 11, 15, 0} },   // User 3
     { "Iwnb", {1, 4, 5, 6, 0} },    // User 4
     { "Nrpap", {1, 4, 5, 6, 0} },   // User 5
-    { "Pim", {1,4,5,7,8,12,14,16,00}}  // test
+    { "Pim", {1,4,5,7,8,12,14,16,0} }  // test
 }; 
 
 // Function prototypes
 int isNumeric(const char* str);
+int getNumericInput(int *num);
 int authenticateUser(const char* username);
 char * TranslateMessage(char* msg, int length, int option, const char* key);
 char ShiftChar(char c, int amount, char dir, const char* currentAlphabet);

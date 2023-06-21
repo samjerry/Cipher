@@ -26,82 +26,93 @@ int getInput(char *prompt, char *buffer, size_t size) {
 int main()
 {
     char user[50];
-    char optionStr[3];
     int option;
-    char keyIndexStr[3];
     int keyIndex;
+    char message[1000];
 
-    // Prompt the user for their userID, option, and key index
-    if (!getInput("Enter User ID: ", user, sizeof(user))) {
-        printf("Error reading User ID. Exiting.");
-        return -1;
-    }
-
-    // Immediately check if the user exists
-    if (!authenticateUser(user)) 
+    while(1) // Main program loop
     {
-        printf("Invalid User ID. Exiting.");
-        return -1;
-    }
+        printf("Enter User ID: ");
+        fgets(user, sizeof(user), stdin);
+        user[strcspn(user, "\n")] = '\0';  // Remove trailing newline
 
-    printf("Enter option (0 to Write, 1 to Read): ");
-    fgets(optionStr, sizeof(optionStr), stdin);
-    optionStr[strcspn(optionStr, "\n")] = '\0';  // Remove trailing newline
+        if (!authenticateUser(user)) 
+        {
+            printf("Invalid User ID. Exiting.\n");
+            return -1;
+        }
 
-    if (!isNumeric(optionStr)) {
-        printf("Invalid input! Option must be a number.\n");
-        return -1;
-    }
-    option = atoi(optionStr);
+        while(1) // Option selection loop
+        {
+            printf("Enter option (0 to Write, 1 to Read, 2 to Logout): ");
+            if (getNumericInput(&option) != 0 || (option != 0 && option != 1 && option != 2))
+            {
+                printf("Invalid input! Please enter 0 to Write, 1 to Read or 2 to Logout.\n");
+                continue;
+            }
 
-    printf("Available languages are:\n");
-    for (int i = 0; i < sizeof(keys)/sizeof(keys[0]); i++) {
-        if (isKeyAvailableForUser(user, i + 1)) {
-            printf("%d (%s)\n", i + 1, keys[i]);
+            if(option == 2) // Logout and go back to user selection
+            {
+                break;
+            }
+
+            while(1) // Language selection loop
+            {
+                printf("Available languages are:\n");
+                for (int i = 0; i < NUMBER_OF_KEYS; i++) 
+                {
+                    if (isKeyAvailableForUser(user, i + 1)) 
+                    {
+                        printf("%d (%s)\n", i + 1, keys[i]);
+                    }
+                }
+                printf("Enter language number or -1 to go back: ");
+                
+                if (getNumericInput(&keyIndex) != 0 || (!isKeyAvailableForUser(user, keyIndex) && keyIndex != -1) || keyIndex < -1 || keyIndex > NUMBER_OF_KEYS)
+                {
+                    printf("Invalid input! Please enter a valid language number or -1 to go back.\n");
+                    continue;
+                }
+
+                if(keyIndex == -1) // Go back to option selection
+                {
+                    break;
+                }
+
+                while(1) // Message input and translation loop
+                {
+                    const char* key = keys[keyIndex - 1];
+
+                    printf("Enter your message or type 'BACK' to go back: ");
+                    fgets(message, sizeof(message), stdin);
+                    message[strcspn(message, "\n")] = '\0';  // Remove trailing newline
+
+                    if(strcmp(message, "BACK") == 0) // Go back to language selection
+                    {
+                        break;
+                    }
+
+                    int msgsize = strlen(message);
+                    TranslateMessage(message, msgsize, option, key);
+
+                    printf("Translated message: %s\n", message);
+
+                    char cont[50];
+                    printf("Do you want to translate another message in this language? (yes/no): ");
+                    fgets(cont, sizeof(cont), stdin);
+                    cont[strcspn(cont, "\n")] = '\0';  // Remove trailing newline
+
+                    if(strcmp(cont, "no") == 0) // Go back to language selection
+                    {
+                        break;
+                    }
+                }
+            }
         }
     }
-    printf("Enter language number: ");
-    fgets(keyIndexStr, sizeof(keyIndexStr), stdin);
-    keyIndexStr[strcspn(keyIndexStr, "\n")] = '\0';  // Remove trailing newline
-
-    if (!isNumeric(keyIndexStr)) {
-        printf("Invalid input! Language number must be a number.\n");
-        return -1;
-    }
-    keyIndex = atoi(keyIndexStr);
-
-    // Get language number from user and validate
-    char keyIndex_str[3];
-    if(!getInput("Enter language number: ", keyIndex_str, sizeof(keyIndex_str)) || 
-                                            sscanf(keyIndex_str, "%d", &keyIndex) != 1 || 
-                                            !isKeyAvailableForUser(user, keyIndex) || 
-                                            keyIndex < 1 || 
-                                            keyIndex > sizeof(keys)/sizeof(keys[0])) {
-        printf("Invalid input!\n");
-        return -1;
-    }
-
-    const char* key = keys[keyIndex - 1];
-
-
-    // Determine the size of the alphabet
-    int alphabetSize = sizeof(alphabet) / sizeof(alphabet[0]);
-
-    // Prompt the user for the message to encrypt/decrypt
-    char message[1000];  // Choose an appropriate size for your use case
-    if (!getInput("Enter your message: ", message, sizeof(message))) {
-        printf("Error reading message. Exiting.");
-        return -1;
-    }
-
-    int msgsize = strlen(message);
-    TranslateMessage(message, msgsize, option, key);
-
-
-    printf("Translated message: %s\n", message);
-
     return 0;
 }
+
 
 int isNumeric(const char* str) {
     while (*str) {
@@ -111,6 +122,33 @@ int isNumeric(const char* str) {
         str++;
     }
     return 1;
+}
+
+int getNumericInput(int *num)
+{
+    char buffer[50];
+
+    if (fgets(buffer, sizeof(buffer), stdin) != NULL)
+    {
+        char *endptr;
+        long int val = strtol(buffer, &endptr, 10);
+
+        if (endptr == buffer || *endptr != '\n')
+        {
+            // Not a valid integer
+            return -1;
+        }
+        else
+        {
+            *num = (int) val;
+            return 0;
+        }
+    }
+    else
+    {
+        // fgets failed
+        return -1;
+    }
 }
 
 int authenticateUser(const char* username) {
