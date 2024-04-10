@@ -19,22 +19,22 @@
 static const char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
 static const char upperAlphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-static const char *keys[] = {"Dwarvish", 
-                             "Elvish", 
-                             "Giant", 
-                             "Gnomish", 
-                             "Goblin", 
-                             "Halfling", 
-                             "Orc", 
-                             "Abyssal",
-                             "Celestial", 
-                             "Draconic", 
-                             "DeepSpeech", 
-                             "Infernal", 
-                             "Primordial", 
-                             "Sylvan", 
-                             "Undercommon", 
-                             "Druidic"
+static const char *keys[] = {"Dwarvish",    /*1*/
+                             "Elvish",      /*2*/
+                             "Giant",       /*3*/
+                             "Gnomish",     /*4*/
+                             "Goblin",      /*5*/
+                             "Halfling",    /*6*/
+                             "Orc",         /*7*/
+                             "Abyssal",     /*8*/
+                             "Celestial",   /*9*/
+                             "Draconic",    /*10*/
+                             "DeepSpeech",  /*11*/
+                             "Infernal",    /*12*/
+                             "Primordial",  /*13*/
+                             "Sylvan",      /*14*/
+                             "Undercommon", /*15*/
+                             "Druidic"      /*16*/
                             };
 
 typedef struct {
@@ -44,7 +44,7 @@ typedef struct {
 } User;
 
 User users[] = {
-    { "428", "Admin", {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0} },
+    { "1337", "Admin", {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0} },
     { "Lqmvlxe", "Sparkle", {14, 0} },
     { "Ikalm", "Alora", {1, 2, 4, 6, 7, 0} },
     { "Eyjvyxs", "Adelynn", {4, 11, 15, 0} },
