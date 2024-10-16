@@ -1,24 +1,32 @@
 # Encrypt/Decrypt Program
 
-## Table Of Content
-1. [Overview](#overview)
+## 📑 Table Of Content
+1. [Overview](#📜-Overview)
 2. [Usage](#usage)
 3. [Example](#example)
 4. [Important Notes](#important-notes)
 5. [Build](#build)
 6. [Limitations](#limitations)
 
-## Overview
-This C program is a unique implementation of a Vigenère cipher, a method of encrypting alphabetic text by using a series of different Caesar ciphers based on the letters of a keyword. Vigenère cipher is a form of polyalphabetic substitution cipher.
-In a Caesar cipher, each letter in the plaintext is 'shifted' a certain number of places down the alphabet. For example, with a shift of 1, A would be replaced by B, B would become C, and so on.
+## 📜 Overview
+This C program is a unique implementation of the **Vigenère cipher**, a method for encrypting alphabetic text using a series of different Caesar ciphers, where the shift is determined by the letters of a keyword. Unlike a standard Vigenère cipher, this program introduces a twist: the direction of the shift alternates for each character. This enhancement adds an extra layer of security, making it more resistant to standard cryptographic attacks.
 
-In the traditional Vigenère cipher, a keyword is used to determine the shift. Each letter of the keyword is converted to its numerical equivalent (A=1, B=2, etc.), and the resulting number is used to determine the shift for a particular letter in the plaintext.
+### **How It Works**
+In a **Caesar cipher**, each letter in the plaintext is shifted a set number of positions down the alphabet. For example, a shift of 1 would convert A to B, B to C, and so on. The **Vigenère cipher** extends this idea by using a keyword to determine the shifts. Each letter of the keyword corresponds to a numerical value (A=1, B=2, etc.), and this value is used for shifting the characters of the plaintext.
 
-However, this program features an unique twist on the Vigenère cipher. The direction of the shift for each character alternates depending on its position. The first letter of the keyword results in a right shift of the first letter of the plaintext, the second letter of the keyword leads to a left shift of the second letter of the plaintext, the third letter of the keyword results in a right shift of the third letter of the plaintext, and so forth. This adds an extra layer of security to the encrypted message, making it even more resistant to standard frequency analysis attacks.
+### **Unique Twist**
+In this program:
 
-The program also includes a user authentication feature. Each user is assigned a set of languages, which act as keys for the Vigenère cipher. Once authenticated, users can only encrypt or decrypt messages using the languages (keys) from the dungeons and dragons universe that are available to them.
+- The first letter of the plaintext is shifted **right** based on the first letter of the keyword.
+- The second letter is shifted **left** based on the second letter of the keyword.
+- This pattern continues, alternating the direction of the shift.
+  
+The result is a more complex encryption pattern that enhances security.
 
-The keys available are:
+### **User Authentication and Keys**
+The program also features **user authentication**. Each user is assigned specific languages (acting as keys) from the **Dungeons & Dragons** universe. Only authenticated users can encrypt or decrypt messages using the languages available to them.
+
+**Available Keys:**
 | Key |   Language  |  | Key |   Language  |
 | --- |:-----------:|--| --- |:-----------:|
 | 1   |   Dwarvish  |  | 9   |  Celestial  |
@@ -30,19 +38,17 @@ The keys available are:
 | 7   |     Orc     |  | 15  | Undercommon |
 | 8   |   Abyssal   |  | 16  |   Druidic   |
 
-## Usage
-This program guides users through a sequence of interactions:
+## 🛠️ Usage
+The program guides users through a series of interactive prompts:
 
-Initially, users are prompted to input their unique ID for authentication purposes. Should they wish to exit the program, they simply have to type 'quit'.
-Once their identity is authenticated, users will be presented with a choice to either write, which entails encrypting a message, or read, which involves decrypting a message.
+1. **Authentication:** Enter your unique user ID to log in. Type `quit` to exit.
+2. **Choose Action:** Select whether to **encrypt (write)** or **decrypt (read)** a message.
+3. **Language Selection:** View the available languages (keys) assigned to you and pick one.
+4. **Enter Text:** Input the text you want to encrypt or decrypt. The program processes your input and displays the result.
+5. **Repeat or Change Language:** Decide whether to continue using the same language or return to the language selection.
 
-Following their selection, the program displays all the available languages (acting as keys) that the user has access to, and prompts them to pick one.
-Upon choosing their preferred language, users are then able to enter the text they wish to encrypt or decrypt. The program then carries out the specified operation and displays the outcome.
-
-Finally, the user is given the option to continue with the same language. If they opt to proceed, they are invited to input more text for processing. Conversely, if they decide against it, they are redirected back to the language selection stage.
-
-## Example
-Let's say we have a user "Pim" who has access to the languages 1,4,5,7,8,12,14,16. Here is how an interaction with the program might look:
+## 📋 Example
+Here is a sample interaction with the program:
 
 ```yaml
 Enter User ID (or 'quit' to exit): Pim
@@ -64,60 +70,43 @@ Enter your message: goodbye
 Translated message: tifnqcf
 Do you want to continue in this language? (1 for Yes, 0 for No): 0
 ```
-The program would then go back to the language selection step.
+After choosing `No`, the program returns to the language selection menu.
 
-## Important Notes
-Only authenticated users can access the program. Usernames and accessible languages are predefined in the cipher.h file.
+## ⚠️ Important Notes
+- **Authentication Required:** Only authenticated users can access the encryption and decryption features. Usernames and accessible languages are predefined in the `cipher.h` file.
+- **Language Access:** Users can only use the languages assigned to them.
+- **Input Validation:** The program validates basic inputs (e.g., expecting numeric inputs where needed) but does not check for input length overflow.
+- **Character Support:** The program operates using ASCII values, and only supports the English alphabet (A-Z, a-z). Special characters, numerals, and letters from other alphabets are not supported.
 
-The languages (keys) for each user are also predefined. A user cannot access a language that is not assigned to them.
+## 🔧 Build Instructions
 
-The program performs basic input validation, checking for numeric inputs where required. It does not, however, check for input length overflow.
+To run the program, you need to compile it using the GNU Compiler Collection (GCC). Follow the steps below:
 
-The program uses ASCII values for the lower and upper case letters, meaning it only works with the English alphabet and does not support special characters or letters from other alphabets.
-
-## Build
-
-Before you can run the program, it needs to be compiled into an executable format. This is done using a compiler - in this case, we're using the GNU Compiler Collection (GCC).
-
-GCC is a powerful tool that can compile code written in C, C++, and other languages. The primary command to use GCC to compile C code is gcc. In our specific use case, we're going to use it to compile our cipher.c file into an executable that we can run.
-
-Here's the process:
-
-Open Terminal: To run GCC commands, you need to open your terminal. On Windows, you can use Command Prompt or PowerShell. On macOS or Linux, just open the Terminal application.
-
-Navigate to the Project Directory: Use the cd (change directory) command in the terminal to navigate to the directory where your cipher.c and cipher.h files are located. If your files are in a directory named "cipher_project" on your Desktop, the command might look like this:
-
-On Windows: cd C:\Users\YourUsername\Desktop\cipher_project
-
-On macOS or Linux: cd /Users/YourUsername/Desktop/cipher_project
-
-Compile the Code: Once you're in the correct directory, you can compile your code using the gcc command:
+1. Open Terminal: Use Command Prompt or PowerShell on Windows, or Terminal on macOS/Linux.
+2. Navigate to Project Directory: Use the `cd` command to go to the directory containing `cipher.c` and `cipher.h`. For example:
+   - Windows: `cd C:\Users\YourUsername\Desktop\cipher_project`
+   -  macOS/Linux: `cd /Users/YourUsername/Desktop/cipher_project`
+3. Compile the Program:
 
 ```bash
 $ gcc -o cipher cipher.c
 ```
-Here's a quick breakdown of what the command does:
+`gcc`: Invokes the GCC compiler.
 
-`gcc`: calls the GCC compiler
+`-o cipher`: Names the compiled output file as "cipher".
 
-`-o cipher`: tells the compiler to output the compiled code into a file named "cipher". If you want the output file to have a different name, you can replace "cipher" with your desired name.
+`cipher.c`: The source code file to compile.
 
-`cipher.c`: this is the C source file that you want to compile.
-
-Run the Program: If the code compiled successfully, you can now run your program with the following command:
+4. Run the Program:
 
 ```bash
 $ ./cipher
 ```
+If there are errors during compilation, check the terminal output for troubleshooting hints.
 
-If you run into any issues during compilation, make sure to check the error message in the terminal. It will often give you a clue as to what went wrong.
+## 🚧 Limitations
 
-## Limitations
-
-The program currently does not support special characters, numerals, or letters from non-English alphabets.
-
-The list of users and their respective keys are hardcoded in the cipher.h header file, which might not be the most flexible design for a larger, scalable application.
-
-There is no error handling mechanism for input length overflow.
-
-The 'shift' value for each key is determined by its position in the alphabet, which may not provide sufficient complexity for a real-world encryption scenario.
+- **Character Restrictions:** The program only supports the English alphabet. It cannot process numerals, special characters, or letters from non-English alphabets.
+- **Hardcoded User Data:** User credentials and accessible keys are stored directly in the `cipher.h` file. This design is not ideal for scalability.
+- **Lack of Error Handling:** There is no comprehensive error handling for input overflow or unexpected input types.
+- **Simple Shift Logic:** The shift values are straightforward, which may not provide sufficient security for real-world encryption needs.
