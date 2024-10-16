@@ -1,12 +1,12 @@
 # Encrypt/Decrypt Program
 
 ## 📑 Table Of Content
-1. [Overview](#📜-Overview)
-2. [Usage](#usage)
-3. [Example](#example)
-4. [Important Notes](#important-notes)
-5. [Build](#build)
-6. [Limitations](#limitations)
+1. [Overview](#-overview)
+2. [Usage](#%EF%B8%8F-usage)
+3. [Example](#-example)
+4. [Important Notes](#%EF%B8%8F-important-notes)
+5. [Build](#-build-instructions)
+6. [Limitations](#-limitations)
 
 ## 📜 Overview
 This C program is a unique implementation of the **Vigenère cipher**, a method for encrypting alphabetic text using a series of different Caesar ciphers, where the shift is determined by the letters of a keyword. Unlike a standard Vigenère cipher, this program introduces a twist: the direction of the shift alternates for each character. This enhancement adds an extra layer of security, making it more resistant to standard cryptographic attacks.
