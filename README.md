@@ -2,11 +2,12 @@
 
 ## 📑 Table Of Content
 1. [Overview](#-overview)
-2. [Usage](#%EF%B8%8F-usage)
-3. [Example](#-example)
-4. [Important Notes](#%EF%B8%8F-important-notes)
-5. [Build](#-build-instructions)
-6. [Limitations](#-limitations)
+2. [Code Structure](%EF%B8%8F-code-structure)
+3. [Usage](#%EF%B8%8F-usage)
+4. [Example](#-example)
+5. [Important Notes](#%EF%B8%8F-important-notes)
+6. [Build](#-build-instructions)
+7. [Limitations](#-limitations)
 
 ## 📜 Overview
 This C program is a unique implementation of the **Vigenère cipher**, a method for encrypting alphabetic text using a series of different Caesar ciphers, where the shift is determined by the letters of a keyword. Unlike a standard Vigenère cipher, this program introduces a twist: the direction of the shift alternates for each character. This enhancement adds an extra layer of security, making it more resistant to standard cryptographic attacks.
@@ -37,6 +38,25 @@ The program also features **user authentication**. Each user is assigned specifi
 | 6   |   Halfling  |  | 14  |    Sylvan   |
 | 7   |     Orc     |  | 15  | Undercommon |
 | 8   |   Abyssal   |  | 16  |   Druidic   |
+
+
+## 🏗️ Code Structure
+**File:** `cipher.c`
+- `getInput(char *prompt, char *buffer, size_t size)`: Handles user input and checks for buffer overflow.
+- `clearConsole()`: Clears the console screen based on the operating system.
+- `main()`: The main function that manages user authentication, option selection, and message processing.
+- `isNumeric(const char* str)`: Checks if a given string is numeric.
+- `getNumericInput(int *num)`: Retrieves and validates numeric input from the user.
+- `authenticateUser(const char* userID)`: Authenticates the user based on predefined IDs.
+- `isKeyAvailableForUser(const User *user, int keyIndex)`: Verifies if a language key is available for the authenticated user.
+- `TranslateMessage(char* msg, int length, int option, const char* key)`: Encrypts or decrypts a message using alternating shift directions.
+- `ShiftChar(char c, int amount, char dir, const char* currentAlphabet)`: Shifts a character left or right based on the specified direction and amount.
+
+**File:** `cipher.h`
+- **Platform-Specific Commands:** Contains commands for clearing the console based on the operating system.
+- **Constants:** Defines ASCII values, alphabet range, and the list of available languages (keys).
+- **User Data:** Predefined user list with unique IDs, usernames, and accessible keys.
+- **Function Prototypes:** Prototypes for functions defined in `cipher.c`.
 
 ## 🛠️ Usage
 The program guides users through a series of interactive prompts:
